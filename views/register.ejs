@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <title>Register</title>
+</head>
+
+<body class="min-h-screen flex items-center justify-center bg-gradient-to-br from-teal-900 via-blue-900 to-gray-900">
+
+  <div class="bg-white/95 backdrop-blur-md p-8 rounded-2xl shadow-2xl w-full max-w-md border border-white/20">
+    
+    <h1 class="text-3xl font-bold text-center text-gray-800 mb-6">
+      Create Account
+    </h1>
+
+        <ul>
+      <% if(typeof errors != 'undefined') {%>
+      <% errors.forEach(error=>{%>
+      <li><%= error.message %></li>
+      <%})%>
+      <%}%>
+    </ul>
+
+
+    <form class="space-y-4" action="/users/register" method="post">
+      
+      <input 
+        type="text" 
+        name="name"
+        placeholder="Name"
+        class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 transition"
+        required
+      >
+
+      <input 
+        type="email" 
+        name="email"
+        placeholder="E-Mail"
+        class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 transition"
+        required
+      >
+
+      <input 
+        type="password" 
+        name="password"
+        placeholder="Password"
+        class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 transition"
+        required
+      >
+
+      <input 
+        type="password" 
+        name="password2"
+        placeholder="Confirm Password"
+        class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500 transition"
+        required
+      >
+
+      <button 
+        type="submit" 
+        class="w-full bg-gradient-to-r from-teal-500 via-blue-600 to-teal-700 text-white p-3 rounded-lg font-semibold shadow-md hover:scale-105 hover:shadow-xl transition duration-300"
+      >
+        Register
+      </button>
+
+    </form>
+
+    <ul>
+      <% if(typeof errors != 'undefined') {%>
+      <% errors.forEach(error=>{%>
+      <li><%= error.message %></li>
+      <%})%>
+      <%}%>
+    </ul>
+
+    <p class="text-center text-sm text-gray-600 mt-5">
+      Already registered?
+      <a href="/users/login" class="text-teal-600 font-medium hover:underline">
+        Login
+      </a>
+    </p>
+
+  </div>
+
+</body>
+</html>
