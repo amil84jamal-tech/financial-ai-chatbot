@@ -1,11 +1,21 @@
+require('dotenv').config();
 const {Client} = require('pg')
 const express = require('express')
 const app = express()
 const Joi = require('joi')
+const session = require('express-session')
+const flash = require('express-flash');
+
 app.use(express.urlencoded({extended:true}))
 app.use(express.json())
-
-
+app.use(session(
+    {
+        secret:'secret',
+        resave:false,
+        saveUninitialized:false
+    }
+))
+app.use(flash())
 const con = new Client({
     host : "localhost",
     user : "amilaminjamal",
@@ -25,6 +35,33 @@ const schema = Joi.object({
         description:Joi.string().allow(''),
         is_necessary:Joi.boolean() 
     });
+
+app.set("view engine",'ejs');   
+
+app.get('/setbudget', (req,res)=>{
+    res.render("budget");
+})
+
+
+app.get('/happy', (req,res)=>{
+    res.render("happy");
+})
+app.post('/setbudget', (req,res)=>{
+     const{month,budget}=req.body;
+     console.log(req.body);
+     con.query('INSERT INTO monbud (month,amount) VALUES ($1,$2) RETURNING id,month,amount',[month,budget],(err,result)=>{
+        if(err)
+        {
+            throw err;
+        }
+        else
+        {
+            console.log(result.rows);
+            req.flash('success_msg',"Your entry is succesful");
+            res.redirect("/happy");
+        }
+     })
+})
 
 app.post('/create',(req,res)=>{
     
@@ -526,6 +563,107 @@ app.get('/maxday',(req,res)=>{
       }
 })
 })
+
+function combe(expense)
+{
+    const bud = Number(expense.a);
+    const e = Number(expense.b);
+
+    if(bud>=e)
+    {
+        return{
+            Budget : bud,
+            Expense : e,
+            Insight : "You are in control"
+
+        }
+    }
+    else
+    {
+        return{
+            Budget : bud,
+            Expense : e,
+            Insight : "You are overspending and exceeding the budget"
+
+        }
+    }
+}
+
+app.get('/compbudexp',(req,res)=>{
+    const sqry = "SELECT (SELECT SUM(amount) FROM exp) AS a ,(SELECT SUM(amount) FROM monbud) AS b";
+    con.query(sqry,(err,result)=>{
+         if(err)
+       {
+        res.send(err);
+       }
+      else
+       {
+        const data = combe(result.rows[0]);
+        res.send(data);
+       }
+    })
+})
+function mebinsights(expense)
+{
+  const m = Number(expense.expense);
+  const b = Number(expense.budget);
+  console.log(m,b);
+  const d = Math.abs(m-b);
+  if(m > b)
+  {
+    return{
+        MonthlyExpense :m,
+        MonthlyBudget :b,
+        Message:`You have exceeded the budget by ${d}`
+    }
+  }
+  else
+  {
+    return{
+        MonthlyExpense :m,
+        MonthlyBudget :b,
+        Message:`You are in control, Congrats`
+    }
+  }
+}
+app.get('/monthlyanalysis', (req,res)=>{
+    const mqry = "SELECT m.month AS Month, m.total AS Expense ,b.amount AS Budget FROM monexp m LEFT JOIN monbud b ON m.month=b.month";
+    con.query(mqry,(err,result)=>{
+        if(err)
+        {
+            res.send(err);
+        }
+        else
+        {
+            console.log(result.rows[0]);
+            const data = mebinsights(result.rows[0]);
+            res.send(data);
+        }
+    })
+})
+
+app.get('/setgoals', (req,res)=>{
+    res.render("goals");
+})
+
+
+app.post('/setgoals', (req,res)=>{
+     const{mission,target,savings,deadline}=req.body;
+     console.log(req.body);
+     con.query('INSERT INTO goal(mission,targetamount,savingsamount,deadline) VALUES ($1,$2,$3,$4)',[mission,target,savings,deadline],(err,result)=>{
+        if(err)
+        {
+            throw err;
+        }
+        else
+        {
+            console.log(result.rows);
+            req.flash('success_msg',"Your entry is succesful");
+            res.redirect("/happy");
+        }
+     })
+})
+
 
 app.listen(3000,()=>{
     console.log(`Listening at http://localhost.com:3000`)
