@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Finn | Dashboard</title>
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Arial, Helvetica, sans-serif;
+        }
+
+        body{
+            background:#000;
+            color:white;
+            display:flex;
+            min-height:100vh;
+        }
+
+        /* SIDEBAR */
+
+        .sidebar{
+            width:260px;
+            background:#0d0d0d;
+            border-right:1px solid rgba(255,255,255,0.06);
+            padding:30px 20px;
+            display:flex;
+            flex-direction:column;
+            justify-content:space-between;
+        }
+
+        .logo{
+            color:#1DB954;
+            font-size:2rem;
+            font-weight:bold;
+            margin-bottom:40px;
+        }
+
+        .menu{
+            display:flex;
+            flex-direction:column;
+            gap:15px;
+        }
+
+        .menu a{
+            text-decoration:none;
+            color:#b3b3b3;
+            padding:14px 16px;
+            border-radius:12px;
+            transition:0.3s;
+        }
+
+        .menu a:hover,
+        .menu .active{
+            background:#1DB954;
+            color:black;
+            font-weight:bold;
+        }
+
+        .logout{
+            text-decoration:none;
+            color:#ff4d4d;
+            padding:14px 16px;
+            border-radius:12px;
+            transition:0.3s;
+        }
+
+        .logout:hover{
+            background:#1a1a1a;
+        }
+
+        /* MAIN */
+
+        .main{
+            flex:1;
+            padding:40px;
+        }
+
+        .topbar{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            margin-bottom:40px;
+            flex-wrap:wrap;
+            gap:20px;
+        }
+
+        .topbar h1{
+            font-size:2.3rem;
+        }
+
+        .search-box input{
+            width:300px;
+            max-width:100%;
+            padding:14px;
+            border:none;
+            outline:none;
+            border-radius:12px;
+            background:#111;
+            color:white;
+        }
+
+        /* CARDS */
+
+        .cards{
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+            gap:25px;
+            margin-bottom:40px;
+        }
+
+        .card{
+            background:#111;
+            padding:30px;
+            border-radius:20px;
+            border:1px solid rgba(29,185,84,0.1);
+            transition:0.3s;
+        }
+
+        .card:hover{
+            transform:translateY(-5px);
+            border-color:#1DB954;
+        }
+
+        .card h3{
+            color:#aaa;
+            margin-bottom:15px;
+            font-size:1rem;
+        }
+
+        .card .amount{
+            font-size:2rem;
+            font-weight:bold;
+            color:#1DB954;
+        }
+
+        /* CHAT SECTION */
+
+        .chat-section{
+            background:#111;
+            border-radius:20px;
+            padding:30px;
+            border:1px solid rgba(29,185,84,0.1);
+        }
+
+        .chat-header{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            margin-bottom:25px;
+        }
+
+        .chat-header h2{
+            color:white;
+        }
+
+        .chat-box{
+            background:#0a0a0a;
+            border-radius:16px;
+            padding:20px;
+            min-height:250px;
+            margin-bottom:20px;
+            overflow-y:auto;
+        }
+
+        .message{
+            margin-bottom:18px;
+            line-height:1.7;
+        }
+
+        .bot{
+            color:#1DB954;
+        }
+
+        .user{
+            color:white;
+            text-align:right;
+        }
+
+        .chat-input{
+            display:flex;
+            gap:15px;
+        }
+
+        .chat-input input{
+            flex:1;
+            padding:15px;
+            border:none;
+            outline:none;
+            border-radius:12px;
+            background:#0a0a0a;
+            color:white;
+        }
+
+        .chat-input button{
+            padding:15px 24px;
+            border:none;
+            border-radius:12px;
+            background:#1DB954;
+            color:black;
+            font-weight:bold;
+            cursor:pointer;
+            transition:0.3s;
+        }
+
+        .chat-input button:hover{
+            opacity:0.9;
+            transform:translateY(-2px);
+        }
+
+        /* MOBILE */
+
+        @media(max-width:900px){
+
+            body{
+                flex-direction:column;
+            }
+
+            .sidebar{
+                width:100%;
+                border-right:none;
+                border-bottom:1px solid rgba(255,255,255,0.06);
+            }
+
+            .main{
+                padding:25px;
+            }
+
+            .topbar{
+                flex-direction:column;
+                align-items:flex-start;
+            }
+
+            .search-box input{
+                width:100%;
+            }
+
+        }
+
+        @media(max-width:600px){
+
+            .chat-input{
+                flex-direction:column;
+            }
+
+            .topbar h1{
+                font-size:1.8rem;
+            }
+
+        }
+
+    </style>
+
+</head>
+<body>
+
+    <!-- SIDEBAR -->
+
+    <div class="sidebar">
+
+        <div>
+
+            <div class="logo">Finn</div>
+
+            <div class="menu">
+                <a href="#" class="active">Dashboard</a>
+                <a href="#">Expenses</a>
+                <a href="#">Analytics</a>
+                <a href="#">AI Assistant</a>
+                <a href="#">Settings</a>
+            </div>
+
+        </div>
+
+        <a href="#" class="logout">
+            Logout
+        </a>
+
+    </div>
+
+    <!-- MAIN CONTENT -->
+
+    <div class="main">
+
+        <div class="topbar">
+
+            <h1>Financial Dashboard</h1>
+
+            <div class="search-box">
+                <input type="text" placeholder="Search transactions...">
+            </div>
+
+        </div>
+
+        <!-- STATS -->
+
+        <div class="cards">
+
+            <div class="card">
+                <h3>Total Balance</h3>
+                <div class="amount">$12,450</div>
+            </div>
+
+            <div class="card">
+                <h3>Monthly Savings</h3>
+                <div class="amount">$2,340</div>
+            </div>
+
+            <div class="card">
+                <h3>Expenses</h3>
+                <div class="amount">$1,120</div>
+            </div>
+
+        </div>
+
+        <!-- AI CHAT -->
+
+        <div class="chat-section">
+
+            <div class="chat-header">
+                <h2>Finn AI Assistant</h2>
+            </div>
+
+            <div class="chat-box">
+
+                <div class="message bot">
+                    Finn AI: Your expenses increased by 12% this month.
+                </div>
+
+                <div class="message user">
+                    How can I reduce spending?
+                </div>
+
+                <div class="message bot">
+                    Finn AI: Reduce subscription expenses and dining costs to improve savings.
+                </div>
+
+            </div>
+
+            <div class="chat-input">
+
+                <input 
+                    type="text" 
+                    placeholder="Ask Finn about your finances..."
+                >
+
+                <button>
+                    Send
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>
