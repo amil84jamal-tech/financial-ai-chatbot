@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Sed | Register</title>
+    <title>Finni | Register</title>
 
     <style>
+
         *{
             margin:0;
             padding:0;
@@ -20,6 +21,7 @@
             display:flex;
             justify-content:center;
             align-items:center;
+            padding:20px;
         }
 
         .container{
@@ -28,7 +30,7 @@
             padding:40px;
             background:#111;
             border-radius:20px;
-            border:1px solid #1db95433;
+            border:1px solid rgba(29,185,84,0.2);
             box-shadow:0 0 30px rgba(29,185,84,0.15);
         }
 
@@ -43,8 +45,9 @@
         .subtitle{
             text-align:center;
             color:#aaa;
-            margin-bottom:30px;
+            margin-bottom:25px;
             font-size:0.95rem;
+            line-height:1.5;
         }
 
         form{
@@ -85,13 +88,14 @@
 
         button:hover{
             transform:translateY(-2px);
-            opacity:0.9;
+            opacity:0.92;
         }
 
         .footer{
-            margin-top:20px;
+            margin-top:22px;
             text-align:center;
             color:#888;
+            font-size:0.95rem;
         }
 
         .footer a{
@@ -104,24 +108,84 @@
             text-decoration:underline;
         }
 
+        /* ERROR UI */
+
+        .error-list{
+            list-style:none;
+            margin-bottom:20px;
+            display:flex;
+            flex-direction:column;
+            gap:12px;
+        }
+
+        .error-list li{
+            background:rgba(255,77,77,0.12);
+            border:1px solid rgba(255,77,77,0.3);
+            color:#ff7b7b;
+            padding:14px;
+            border-radius:12px;
+            font-size:0.92rem;
+            animation:fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn{
+
+            from{
+                opacity:0;
+                transform:translateY(-5px);
+            }
+
+            to{
+                opacity:1;
+                transform:translateY(0);
+            }
+
+        }
+
         @media(max-width:500px){
+
             .container{
-                margin:20px;
                 padding:30px 20px;
             }
+
+            .logo{
+                font-size:2.1rem;
+            }
+
         }
 
     </style>
+
 </head>
 <body>
 
     <div class="container">
 
-        <div class="logo">Sed</div>
+        <div class="logo">Finni</div>
 
         <div class="subtitle">
             Start tracking your finances intelligently
         </div>
+
+        <!-- ERROR SECTION -->
+
+        <% if(typeof errors != 'undefined' && errors.length > 0) { %>
+
+            <ul class="error-list">
+
+                <% errors.forEach(error => { %>
+
+                    <li>
+                        ⚠ <%= error.message %>
+                    </li>
+
+                <% }) %>
+
+            </ul>
+
+        <% } %>
+
+        <!-- FORM -->
 
         <form action="/users/register" method="post">
 

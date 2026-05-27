@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Sed | Login</title>
+    <title>Finni | Login</title>
 
     <style>
 
@@ -21,6 +21,7 @@
             display:flex;
             justify-content:center;
             align-items:center;
+            padding:20px;
         }
 
         .container{
@@ -44,8 +45,9 @@
         .subtitle{
             text-align:center;
             color:#9a9a9a;
-            margin-bottom:35px;
+            margin-bottom:30px;
             font-size:0.95rem;
+            line-height:1.5;
         }
 
         form{
@@ -106,10 +108,59 @@
             text-decoration:underline;
         }
 
+        /* SUCCESS MESSAGE */
+
+        .success-list{
+            list-style:none;
+            margin-top:20px;
+        }
+
+        .success-list li{
+            background:rgba(29,185,84,0.12);
+            border:1px solid rgba(29,185,84,0.3);
+            color:#7dffab;
+            padding:14px;
+            border-radius:12px;
+            font-size:0.92rem;
+            text-align:center;
+            animation:fadeIn 0.3s ease;
+        }
+
+        /* ERROR MESSAGE */
+
+        .error-list{
+            list-style:none;
+            margin-bottom:20px;
+        }
+
+        .error-list li{
+            background:rgba(255,77,77,0.12);
+            border:1px solid rgba(255,77,77,0.3);
+            color:#ff7b7b;
+            padding:14px;
+            border-radius:12px;
+            font-size:0.92rem;
+            text-align:center;
+            animation:fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn{
+
+            from{
+                opacity:0;
+                transform:translateY(-5px);
+            }
+
+            to{
+                opacity:1;
+                transform:translateY(0);
+            }
+
+        }
+
         @media(max-width:500px){
 
             .container{
-                margin:20px;
                 padding:30px 20px;
             }
 
@@ -126,11 +177,41 @@
 
     <div class="container">
 
-        <div class="logo">Sed</div>
+        <div class="logo">Finni</div>
 
         <div class="subtitle">
             Your AI Finance Companion
         </div>
+
+        <!-- SUCCESS MESSAGE -->
+
+        <% if(messages.success_msg){ %>
+
+            <ul class="success-list">
+
+                <li>
+                    ✓ <%= messages.success_msg %>
+                </li>
+
+            </ul>
+
+        <% } %>
+
+        <!-- ERROR MESSAGE -->
+
+        <% if(messages.error){ %>
+
+            <ul class="error-list">
+
+                <li>
+                    ⚠ <%= messages.error %>
+                </li>
+
+            </ul>
+
+        <% } %>
+
+        <!-- LOGIN FORM -->
 
         <form action="/users/login" method="post">
 
@@ -157,7 +238,7 @@
         </form>
 
         <div class="footer">
-            New to Sed?
+            New to Finni?
             <a href="/users/register">Create Account</a>
         </div>
 
