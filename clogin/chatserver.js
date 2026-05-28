@@ -5,6 +5,9 @@ const con = require('./dbConfig');
 const bcrypt = require('bcrypt')
 const session = require('express-session');
 const flash = require("express-flash");
+const passport = require('passport')
+const initialize = require('./passportConfig')
+initialize(passport)
 
 app.set("view engine", "ejs");
 
@@ -15,6 +18,8 @@ app.use(session({
     saveUninitialised: false
 }));
 app.use(flash());
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.get('/',(req,res)=>{
     res.render("index")
@@ -91,6 +96,12 @@ app.post('/users/register', async(req,res)=>{
     }
 }
 )
+
+app.post('/users/login',passport.authenticate('local',{
+    successRedirect : '/users/dashboard',
+    failureRedirect : '/users/login',
+    failureFlash:true
+}))
 
 app.listen(PORT,()=>{
     console.log("Server Connected.....")
