@@ -9,6 +9,23 @@ const passport = require('passport')
 const initialize = require('./passportConfig')
 initialize(passport)
 
+function checkauthenticated(req,res,next)
+{
+    if (req.isAuthenticated())
+    {
+        return res.redirect('/users/dashboard');
+    }
+    next();
+}
+
+function notauthenticated(req,res,next)
+{
+    if (req.isAuthenticated())
+    {
+        return next();
+    }
+   res.redirect('/users/login');
+}
 app.set("view engine", "ejs");
 
 app.use(express.urlencoded({extended: true}));
@@ -25,15 +42,15 @@ app.get('/',(req,res)=>{
     res.render("index")
 })
 
-app.get('/users/login',(req,res)=>{
+app.get('/users/login',checkauthenticated,(req,res)=>{
     res.render("login")
 })
 
-app.get('/users/register',(req,res)=>{
+app.get('/users/register',checkauthenticated,(req,res)=>{
     res.render("register")
 })
 
-app.get('/users/dashboard',(req,res)=>{
+app.get('/users/dashboard',notauthenticated,(req,res)=>{
     res.render("dashboard")
 })
 
@@ -102,6 +119,19 @@ app.post('/users/login',passport.authenticate('local',{
     failureRedirect : '/users/login',
     failureFlash:true
 }))
+
+app.get('/users/logout', (req,res)=>{
+    req.logOut((err)=>{
+        if(err)
+        {
+            return next(err);
+        }
+    
+    req.flash('success_msg',"You have logged out successfully");
+    res.redirect('/users/login');
+    });
+})
+
 
 app.listen(PORT,()=>{
     console.log("Server Connected.....")
