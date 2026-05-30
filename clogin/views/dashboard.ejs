@@ -302,8 +302,8 @@
 
             <div class="card">
                 <h3>Total Balance</h3>
-                <div class="amount">$12,450</div>
-            </div>
+            <div class="amount" id="totalAmount">Loading...</div>
+        </div>
 
             <div class="card">
                 <h3>Monthly Savings</h3>
@@ -357,6 +357,23 @@
         </div>
 
     </div>
+    <script>
+async function loadTotal() {
+    try {
+        const response = await fetch('http://localhost:3000/gettot');
+        const data = await response.json();
+
+        document.getElementById('totalAmount').innerText =
+            '₹' + data.total;
+
+          
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+loadTotal();
+</script>
 
 </body>
 </html>

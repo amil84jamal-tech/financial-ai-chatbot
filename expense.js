@@ -4,7 +4,7 @@ const app = express()
 const Joi = require('joi')
 const session = require('express-session')
 const flash = require('express-flash');
-
+const cors = require('cors');
 app.use(express.urlencoded({extended:true}))
 app.use(express.json())
 app.use(session(
@@ -14,6 +14,7 @@ app.use(session(
         saveUninitialized:false
     }
 ))
+app.use(cors());
 app.use(flash())
 const con = new Client({
     host : "localhost",

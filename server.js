@@ -3,15 +3,16 @@ const app = express();
 const session = require('express-session');
 const flash = require('express-flash');
 const passport = require('passport');
-
+const cors = require('cors');
 const initializePassport = require("./passportConfig");
 initializePassport(passport);
 const con = require('./dbconfig');
 
 const bcrypt = require("bcrypt");
 
-const PORT =    process.env.PORT || 4000;
+const PORT =    process.env.PORT || 3000;
 
+app.use(cors());
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
 app.use(session({
