@@ -7,6 +7,7 @@ const session = require('express-session');
 const flash = require("express-flash");
 const passport = require('passport')
 const initialize = require('./passportConfig')
+const jwt = require('jsonwebtoken')
 initialize(passport)
 
 function checkauthenticated(req,res,next)
@@ -29,6 +30,7 @@ function notauthenticated(req,res,next)
 app.set("view engine", "ejs");
 
 app.use(express.urlencoded({extended: true}));
+app.use(express.json());
 app.use(session({
     secret : "secret",
     resave : false,
@@ -114,11 +116,20 @@ app.post('/users/register', async(req,res)=>{
 }
 )
 
-app.post('/users/login',passport.authenticate('local',{
+app.post('/users/login',(req,res,next)=>{
+    const {email,password} = req.body;
+    const user = { email : email, password : password};
+    const accesstoken = jwt.sign(user,process.env.ACCESS_TOKEN_SECRET);
+    console.log({accesstoken : accesstoken});
+    next();
+  },
+  passport.authenticate('local',{
     successRedirect : '/users/dashboard',
     failureRedirect : '/users/login',
     failureFlash:true
-}))
+})
+);
+
 
 app.get('/users/logout', (req,res)=>{
     req.logOut((err)=>{
