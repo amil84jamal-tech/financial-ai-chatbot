@@ -27,6 +27,26 @@ function notauthenticated(req,res,next)
     }
    res.redirect('/users/login');
 }
+
+function authenticateToken(req,res,next)
+{
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(" ")[1];
+    if(token == null)
+    {
+        res.sendStatus(401);
+    }
+    jwt.verify(token,process.env.ACCESS_TOKEN_SECRET,(err,user)=>{
+        if(err)
+        {
+            throw err;
+        }
+        req.user=user;
+        console.log(req.user);
+        next();
+    })
+    
+}
 app.set("view engine", "ejs");
 
 app.use(express.urlencoded({extended: true}));
@@ -52,7 +72,7 @@ app.get('/users/register',checkauthenticated,(req,res)=>{
     res.render("register")
 })
 
-app.get('/users/dashboard',notauthenticated,(req,res)=>{
+app.get('/users/dashboard',authenticateToken,(req,res)=>{
     res.render("dashboard")
 })
 
