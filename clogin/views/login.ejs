@@ -185,32 +185,6 @@
 
         <!-- SUCCESS MESSAGE -->
 
-        <% if(messages.success_msg){ %>
-
-            <ul class="success-list">
-
-                <li>
-                    ✓ <%= messages.success_msg %>
-                </li>
-
-            </ul>
-
-        <% } %>
-
-        <!-- ERROR MESSAGE -->
-
-        <% if(messages.error){ %>
-
-            <ul class="error-list">
-
-                <li>
-                    ⚠ <%= messages.error %>
-                </li>
-
-            </ul>
-
-        <% } %>
-
         <!-- LOGIN FORM -->
 
         <form action="/users/login" method="post">
