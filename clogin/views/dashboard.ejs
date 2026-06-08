@@ -306,8 +306,8 @@
         </div>
 
             <div class="card">
-                <h3>Monthly Savings</h3>
-                <div class="amount">$2,340</div>
+                <h3>Category Spendings</h3>
+                <div class="amount" id="catAmount">$2,340</div>
             </div>
 
             <div class="card">
@@ -373,6 +373,23 @@ async function loadTotal() {
 }
 
 loadTotal();
+</script>
+
+ <script>
+async function WeekComp() {
+    try {
+        const response = await fetch('http://localhost:3000/compweek');
+        const data = await response.json();
+
+        document.getElementById('catAmount').innerText = '₹' + data.amount;
+
+          
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+WeekComp();
 </script>
 
 </body>
