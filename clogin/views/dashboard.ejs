@@ -311,8 +311,8 @@
             </div>
 
             <div class="card">
-                <h3>Expenses</h3>
-                <div class="amount">$1,120</div>
+                <h3>Category Breakdown</h3>
+                <div class="amount" id="catbreak">$1,120</div>
             </div>
 
         </div>
@@ -391,6 +391,28 @@ async function WeekComp() {
 
 WeekComp();
 </script>
+
+ <script>
+async function CatBra() {
+    try {
+        const response = await fetch('http://localhost:3000/getcategoryamount');
+        const data = await response.json();
+
+        const breakdown = data
+            .map(item => `${item.category}: ₹${item.total}`)
+            .join('<br>');
+
+        document.getElementById('catbreak').innerHTML = breakdown;
+
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+CatBra();
+</script>
+
+
 
 </body>
 </html>
